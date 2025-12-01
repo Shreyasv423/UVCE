@@ -4,7 +4,7 @@ const STORAGE_KEY = 'uvce_assist_demo_v1';
 
 // ----------------- Demo dataset -----------------
 const demo = {
-  user: { name: 'Rahul Kumar', branch: 'CSE', semester: 5, credits: 84 },
+  user: { name: 'Shreyas V', branch: 'ISE', semester: 1, credits: 20 },
   attendance: [
     { id: 's1', subject: 'Data Structures', present: 18, total: 20 },
     { id: 's2', subject: 'DBMS', present: 14, total: 20 },
