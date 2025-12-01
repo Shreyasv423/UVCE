@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UVCE Assist — Demo</title>
+  <!-- Tailwind Play CDN for quick styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="description" content="UVCE Assist — Academic, Attendance & Placement demo (static web)"/>
+  <style>
+    /* minor custom styles */
+    .card { @apply bg-white rounded-2xl shadow-md p-4; }
+    .glass { background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); }
+    .grad-primary { background: linear-gradient(90deg,#2b6ef6,#6d3df6); }
+    .grad-purple { background: linear-gradient(90deg,#8e2de2,#4a00e0); }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header / Hero -->
+  <header class="grad-primary text-white p-6 rounded-b-3xl">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div>
+        <div class="text-3xl font-semibold">UVCE Assist</div>
+        <div class="text-sm opacity-90">Academic · Attendance · Placement — demo web</div>
+      </div>
+      <div>
+        <button id="openDashboard" class="bg-white text-blue-600 px-4 py-2 rounded-xl shadow">Open Dashboard</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto mt-6 px-4 pb-20">
+    <!-- Profile / Quick overview -->
+    <section id="dashboard" class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold">Welcome, <span id="userName">Student</span></h2>
+          <p class="text-sm text-gray-500">Your quick academic overview</p>
+        </div>
+        <div>
+          <button id="openProfile" class="px-3 py-2 rounded-lg border">Profile</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="card">
+          <div class="text-sm text-gray-500">Attendance</div>
+          <div class="mt-3 text-2xl font-semibold" id="attendancePercent">--%</div>
+          <div class="text-xs text-gray-400 mt-1">Subject-wise details below</div>
+        </div>
+        <div class="card">
+          <div class="text-sm text-gray-500">CIA Progress</div>
+          <div class="mt-3 text-2xl font-semibold" id="ciaPercent">--%</div>
+          <div class="text-xs text-gray-400 mt-1">Predict your final grade from CIAs</div>
+        </div>
+        <div class="card">
+          <div class="text-sm text-gray-500">Credits Completed</div>
+          <div class="mt-3 text-2xl font-semibold" id="credits">-- / 180</div>
+          <div class="text-xs text-gray-400 mt-1">CBCS progress</div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button class="card text-center" onclick="ui.showSection('attendance')">Attendance</button>
+        <button class="card text-center" onclick="ui.showSection('cia')">CIAs</button>
+        <button class="card text-center" onclick="ui.showSection('notes')">Notes</button>
+        <button class="card text-center" onclick="ui.showSection('placement')">Placement</button>
+      </div>
+
+      <!-- AI Mentor card -->
+      <div class="mt-6 grad-purple p-4 rounded-2xl text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold">AI Mentor</h3>
+            <p class="text-sm opacity-90">Ask for explanations, quick summaries or practice questions (mock AI)</p>
+          </div>
+          <div><button class="bg-white text-purple-700 px-4 py-2 rounded-lg" onclick="ui.showSection('ai')">Start Chat</button></div>
+        </div>
+      </div>
+
+      <!-- Recent Activity (Notes preview) -->
+      <div id="recentActivity" class="mt-6 space-y-3">
+        <h4 class="text-lg font-medium">Recent Activity</h4>
+        <div id="activityList" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- Sections (Attendance, CIA, Notes, Placement, AI) -->
+    <section id="attendance" class="mt-8 hidden">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-semibold">Attendance Tracker</h3>
+        <button class="px-3 py-1 rounded-md bg-blue-600 text-white" onclick="ui.openAddAttendance()">+ Add Subject</button>
+      </div>
+      <div id="attendanceList" class="space-y-3"></div>
+      <p class="mt-4 text-sm text-gray-500">Data saved locally (demo). To connect real data, department access required.</p>
+    </section>
+
+    <section id="cia" class="mt-8 hidden">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-semibold">CIA Tracker & Grade Predictor</h3>
+        <button class="px-3 py-1 rounded-md bg-purple-600 text-white" onclick="ui.openAddCia()">+ Add Subject CIA</button>
+      </div>
+      <div id="ciaList" class="space-y-3"></div>
+      <p class="mt-4 text-sm text-gray-500">Shows CIA average and estimated marks required in end-sem to pass (demo calculation).</p>
+    </section>
+
+    <section id="notes" class="mt-8 hidden">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-semibold">Notes & Resources</h3>
+        <button class="px-3 py-1 rounded-md bg-green-600 text-white" onclick="ui.openAddNote()">+ Add Note</button>
+      </div>
+      <div id="notesList" class="space-y-3"></div>
+    </section>
+
+    <section id="placement" class="mt-8 hidden">
+      <div class="mb-3">
+        <h3 class="text-xl font-semibold">Placement Insights</h3>
+        <p class="text-sm text-gray-500">Sample company stats (demo data).</p>
+      </div>
+      <div id="placementList" class="space-y-3"></div>
+    </section>
+
+    <section id="ai" class="mt-8 hidden">
+      <div class="mb-3">
+        <h3 class="text-xl font-semibold">AI Mentor (Mock)</h3>
+        <p class="text-sm text-gray-500">This is a local mock. Replace with real API later.</p>
+      </div>
+      <div class="card" id="chatBox" style="min-height:180px; max-height:360px; overflow:auto"></div>
+      <div class="flex gap-2 mt-3">
+        <input id="aiInput" class="flex-1 rounded-lg border px-3 py-2" placeholder="Ask: Explain module 3 or Summarize this note..." />
+        <button class="px-4 py-2 rounded-lg bg-indigo-600 text-white" onclick="ai.ask()">Send</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Profile / Modals (simple) -->
+  <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black/30 p-4">
+    <div class="bg-white rounded-xl p-6 w-full max-w-lg">
+      <div id="modalContent"></div>
+      <div class="text-right mt-4">
+        <button class="px-4 py-2 rounded-md border" onclick="ui.closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- scripts -->
+  <script src="js/main.js"></script>
+</body>
+</html>
